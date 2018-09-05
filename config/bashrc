@@ -1,0 +1,15 @@
+#!/bin/bash
+
+cd /work
+alias cleos='/opt/eosio/bin/cleos --url http://nodeos:8888 --wallet-url http://localhost:8900'
+alias cleostestnet='/opt/eosio/bin/cleos --url http://dev.cryptolions.io:38888 "$@"'
+export PS1="\W $ "
+
+sudo apt-get update -yq && apt-get install -y jq nodejs npm
+
+echo "EOS Dev environment ready!"
+
+## Insert here your startup commands
+# ..
+
+alias cleostestnet_ramprice="awk -v var1=$(cleostestnet get table eosio eosio rammarket | jq '.rows[].base.balance' | cut -d ' ' -f 1 | cut -d '"' -f 2) -v var2=$(cleostestnet get table eosio eosio rammarket | jq '.rows[].quote.balance' | cut -d ' ' -f 1 | cut -d '"' -f 2 | cut -d '.' -f 1) 'BEGIN { print  ( var2 / (var1/1024) )}'"
